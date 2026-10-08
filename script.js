@@ -92,7 +92,12 @@ var bom = {
   sprite: null,
   stapGrootte: null
 }
-
+var bob={
+  x:200,
+  y:500,
+  sprite: null,
+  stapGrootte: null
+}
 
 function preload() {
   brug = loadImage("images/backgrounds/dame_op_brug_1800.jpg");
@@ -135,5 +140,4 @@ function draw() {
     text("Je hebt gewonnen!",30,300);
     noLoop();
   }
-}
 }
