@@ -96,7 +96,11 @@ var bob={
   x:200,
   y:500,
   sprite: null,
-  stapGrootte: null
+  stapGrootte: null,
+
+  toon() {
+    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
+  }
 }
 
 function preload() {
@@ -119,7 +123,7 @@ function setup() {
   raster.berekenCelGrootte();
   jos.stapGrootte = 1*raster.celGrootte;
   alice.stapGrootte = 1*raster.celGrootte;
- 
+  bob.stapGrootte = 1*raster.celGrootte;
 }
 
 function draw() {
@@ -129,11 +133,13 @@ function draw() {
   alice.beweeg();
   jos.toon();
   alice.toon();
+  bob.toon();
   if (jos.wordtGeraakt(alice)) {
     noLoop();
   }
-  if (jos.wordtGeraakt(Bob)) {
+  if (jos.wordtGeraakt(bob)) {
     noLoop();
+    }
   if (jos.gehaald) {
     background('green');
     fill('white');
