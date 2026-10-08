@@ -98,12 +98,13 @@ function preload() {
   brug = loadImage("images/backgrounds/dame_op_brug_1800.jpg");
   alice.sprite = loadImage("images/sprites/Alice100px/Alice.png");
   bom.sprite = loadImage("images/sprites/bom.png");
+  bob.sprite = loadImage("images/sprites/Bob100px/Bob.png");
   for (var b = 0;b < jos.aantalFrames;b++) {
     frameJos = loadImage("images/sprites/Jos100px/Jos_" + b + ".png");
     jos.animatie.push(frameJos);
   }
 }
-
+  
 function setup() {
   canvas = createCanvas(900,600);
   canvas.parent();
@@ -113,7 +114,7 @@ function setup() {
   raster.berekenCelGrootte();
   jos.stapGrootte = 1*raster.celGrootte;
   alice.stapGrootte = 1*raster.celGrootte;
-
+ 
 }
 
 function draw() {
@@ -126,10 +127,13 @@ function draw() {
   if (jos.wordtGeraakt(alice)) {
     noLoop();
   }
+  if (jos.wordtGeraakt(Bob)) {
+    noLoop();
   if (jos.gehaald) {
     background('green');
     fill('white');
     text("Je hebt gewonnen!",30,300);
     noLoop();
   }
+}
 }
