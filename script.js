@@ -89,8 +89,21 @@ var alice = {
 }
 
 var bom = {
+  x : 200,
+  y : 600,
   sprite: null,
-  stapGrootte: null
+  stapGrootte: null,
+
+    beweeg() {
+      this.x += floor(random(-0,5,1))*this.stapGrootte;
+      this.y += floor(random(-0,5,1))*this.stapGrootte;
+
+      this.x = constrain(this.x,400,canvas.width - raster.celGrootte);
+      this.y = constrain(this.y,600,canvas.height - raster.celGrootte);
+    },
+  toon() {
+    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
+  }
 }
 var bob={
   x:200,
@@ -98,10 +111,19 @@ var bob={
   sprite: null,
   stapGrootte: null,
 
-  toon() {
-    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
+    beweeg() {
+      this.x += floor(random(-1,2))*this.stapGrootte;
+      this.y += floor(random(-1,2))*this.stapGrootte;
+
+      this.x = constrain(this.x,0,canvas.width - raster.celGrootte);
+      this.y = constrain(this.y,0,canvas.height - raster.celGrootte);
+    },
+
+    toon() {
+      image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
+    }
   }
-}
+
 
 function preload() {
   brug = loadImage("images/backgrounds/dame_op_brug_1800.jpg");
@@ -124,6 +146,7 @@ function setup() {
   jos.stapGrootte = 1*raster.celGrootte;
   alice.stapGrootte = 1*raster.celGrootte;
   bob.stapGrootte = 1*raster.celGrootte;
+  bom.stapGrootte = 1*raster.celGrootte;
 }
 
 function draw() {
@@ -131,8 +154,11 @@ function draw() {
   raster.teken();
   jos.beweeg();
   alice.beweeg();
+  bom.beweeg();
+  bob.beweeg();
   jos.toon();
   alice.toon();
+  bom.toon();
   bob.toon();
   if (jos.wordtGeraakt(alice)) {
     noLoop();
@@ -140,10 +166,55 @@ function draw() {
   if (jos.wordtGeraakt(bob)) {
     noLoop();
     }
+  if(jos.wordtGeraakt(bom)){
+      noLoop();
+  }
   if (jos.gehaald) {
     background('green');
     fill('white');
     text("Je hebt gewonnen!",30,300);
     noLoop();
   }
+}
+
+var bal = {
+  diameter: 40,
+  straal: null,
+  x: null,
+  y: null,
+  snelheidX: 8,
+  snelheidY: 5,
+
+  beweeg() {
+    this.x += this.snelheidX;
+    this.y += this.snelheidY;
+
+    if (this.x < this.straal || this.x > canvas.width - this.straal) {
+      this.snelheidX *= -1;
+    }
+    if (this.y < this.straal || this.y > canvas.height - this.straal) {
+      this.snelheidY *= -1;
+    }
+  },
+
+  teken() {
+    fill(255,255,255,1);
+    ellipse(this.x,this.y,this.diameter);
+  }
+}
+
+function setup() {
+ frameRate(50);
+  colorMode(RGB,255,255,255,1);
+  background(0,0,75,1);
+  noStroke();
+  bal.straal = bal.diameter/2;
+  bal.x = bal.straal;
+  bal.y = canvas.height/4;
+}
+
+function draw() {
+  background(0,0,75,0.2);
+  bal.beweeg();
+  bal.teken();
 }
