@@ -1,23 +1,30 @@
+var video;
+
 var raster = {
-  aantalRijen: 6,
-  aantalKolommen: 9,
+  aantalRijen: 12,
+  aantalKolommen: 18,
   celGrootte: null,
 
   berekenCelGrootte() {
-    this.celGrootte = canvas.width/this.aantalKolommen;
+    this.celGrootte = canvas.width / this.aantalKolommen;
   },
   teken() {
     push();
     noFill();
-    stroke('grey');
-    for (rij=0;rij<this.aantalRijen;rij++) {
-      for (kolom=0;kolom<this.aantalKolommen;kolom++) {
-        rect(kolom*this.celGrootte,rij*this.celGrootte,this.celGrootte,this.celGrootte);
+    stroke("grey");
+    for (rij = 0; rij < this.aantalRijen; rij++) {
+      for (kolom = 0; kolom < this.aantalKolommen; kolom++) {
+        rect(
+          kolom * this.celGrootte,
+          rij * this.celGrootte,
+          this.celGrootte,
+          this.celGrootte,
+        );
       }
     }
     pop();
-  }
-}
+  },
+};
 
 var jos = {
   x: 400,
@@ -46,8 +53,8 @@ var jos = {
       this.frameNummer = 5;
     }
 
-    this.x = constrain(this.x,0,canvas.width);
-    this.y = constrain(this.y,0,canvas.height - raster.celGrootte);
+    this.x = constrain(this.x, 0, canvas.width);
+    this.y = constrain(this.y, 0, canvas.height - raster.celGrootte);
 
     if (this.x == canvas.width) {
       this.gehaald = true;
@@ -57,17 +64,21 @@ var jos = {
   wordtGeraakt(vijand) {
     if (this.x == vijand.x && this.y == vijand.y) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   },
 
   toon() {
-    image(this.animatie[this.frameNummer],this.x,this.y,raster.celGrootte,raster.celGrootte);
-  }
-}
-
+    image(
+      this.animatie[this.frameNummer],
+      this.x,
+      this.y,
+      raster.celGrootte,
+      raster.celGrootte,
+    );
+  },
+};
 
 var alice = {
   x: 700,
@@ -76,17 +87,17 @@ var alice = {
   stapGrootte: null,
 
   beweeg() {
-    this.x += floor(random(-1,2))*this.stapGrootte;
-    this.y += floor(random(-1,2))*this.stapGrootte;
+    this.x += floor(random(-1, 2)) * this.stapGrootte;
+    this.y += floor(random(-1, 2)) * this.stapGrootte;
 
-    this.x = constrain(this.x,0,canvas.width - raster.celGrootte);
-    this.y = constrain(this.y,0,canvas.height - raster.celGrootte);
+    this.x = constrain(this.x, 0, canvas.width - raster.celGrootte);
+    this.y = constrain(this.y, 0, canvas.height - raster.celGrootte);
   },
 
   toon() {
-    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
-  }
-}
+    image(this.sprite, this.x, this.y, raster.celGrootte, raster.celGrootte);
+  },
+};
 
 var bal = {
   diameter: 40,
@@ -109,82 +120,93 @@ var bal = {
   },
 
   teken() {
-    fill(128,0,255,1);
-    ellipse(this.x,this.y,this.diameter);
-  }
-}
+    fill(128, 0, 255, 1);
+    ellipse(this.x, this.y, this.diameter);
+  },
+};
 
 var bom = {
-  x : 200,
-  y : 600,
+  x: 200,
+  y: 600,
   sprite: null,
   stapGrootte: null,
 
-    beweeg() {
-      this.x += floor(random(-1,1))*this.stapGrootte;
-      this.y += floor(random(-1,1))*this.stapGrootte;
+  beweeg() {
+    this.x += floor(random(-1, 1)) * this.stapGrootte;
+    this.y += floor(random(-1, 1)) * this.stapGrootte;
 
-      this.x = constrain(this.x,400,canvas.width - raster.celGrootte);
-      this.y = constrain(this.y,600,canvas.height - raster.celGrootte);
-    },
+    this.x = constrain(this.x, 400, canvas.width - raster.celGrootte);
+    this.y = constrain(this.y, 600, canvas.height - raster.celGrootte);
+  },
   toon() {
-    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
-  }
-}
-var bob={
-  x:200,
-  y:500,
+    image(this.sprite, this.x, this.y, raster.celGrootte, raster.celGrootte);
+  },
+};
+var bob = {
+  x: 200,
+  y: 500,
   sprite: null,
   stapGrootte: null,
 
-    beweeg() {
-      this.x += floor(random(-1,2))*this.stapGrootte;
-      this.y += floor(random(-1,2))*this.stapGrootte;
+  beweeg() {
+    this.x += floor(random(-1, 2)) * this.stapGrootte;
+    this.y += floor(random(-1, 2)) * this.stapGrootte;
 
-      this.x = constrain(this.x,0,canvas.width - raster.celGrootte);
-      this.y = constrain(this.y,0,canvas.height - raster.celGrootte);
-    },
+    this.x = constrain(this.x, 0, canvas.width - raster.celGrootte);
+    this.y = constrain(this.y, 0, canvas.height - raster.celGrootte);
+  },
 
-    toon() {
-      image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
-    }
-  }
-
+  toon() {
+    image(this.sprite, this.x, this.y, raster.celGrootte, raster.celGrootte);
+  },
+};
 
 function preload() {
   brug = loadImage("images/backgrounds/dame_op_brug_1800.jpg");
   alice.sprite = loadImage("images/sprites/Alice100px/Alice.png");
   bom.sprite = loadImage("images/sprites/bom.png");
   bob.sprite = loadImage("images/sprites/Bob100px/Bob.png");
-  for (var b = 0;b < jos.aantalFrames;b++) {
+  for (var b = 0; b < jos.aantalFrames; b++) {
     frameJos = loadImage("images/sprites/Jos100px/Jos_" + b + ".png");
     jos.animatie.push(frameJos);
   }
 }
-  
+
+
+
 function setup() {
-  canvas = createCanvas(900,600);
+  canvas = createCanvas(900, 600);
   canvas.parent();
   frameRate(10);
   textFont("Verdana");
   textSize(90);
   raster.berekenCelGrootte();
   frameRate(50);
-  colorMode(RGB,128,0,255, 1);
+  colorMode(RGB, 128, 0, 255, 1);
   noStroke();
-  bal.straal = bal.diameter/2;
+  bal.straal = bal.diameter / 2;
   bal.x = bal.straal;
-  bal.y = canvas.height/4;
-  
-  jos.stapGrootte = 1*raster.celGrootte;
-  alice.stapGrootte = 1*raster.celGrootte;
-  bob.stapGrootte = 1*raster.celGrootte;
-  bom.stapGrootte = 1*raster.celGrootte;
-  bal.stapGrootte = 1*raster.celGrootte;
+  bal.y = bal.straal;
+  colorMode(RGB, 255, 200, 1); //balkleur
+  jos.stapGrootte = 1 * raster.celGrootte;
+  alice.stapGrootte = 1 * raster.celGrootte;
+  bob.stapGrootte = 1 * raster.celGrootte;
+  ((bom.stapGrootte = 0), 5 * raster.celGrootte);
+  bal.stapGrootte = 1 * raster.celGrootte;
+
+  video = createVideo("133143-755982926.mp4");
+  video.elt.muted = true;
+  video.elt.playsInline = true;
+  video.hide();
+  video.loop();
 }
 
 function draw() {
+
   background(brug);
+  if (video && video.elt.readyState >= 2) {
+    image(video, 0, 0, canvas.width, canvas.height);
+  }
   raster.teken();
   jos.beweeg();
   alice.beweeg();
@@ -197,21 +219,25 @@ function draw() {
   bom.toon();
   bob.toon();
 
-  
-  if (jos.wordtGeraakt(alice)) {
+  if (jos.wordtGeraakt(bob)) {
+    background("red");
+    fill("white");
+    text("Je hebt verloren...", 30, 300);
     noLoop();
   }
-  if (jos.wordtGeraakt(bob)) {
+  if (jos.wordtGeraakt(bom)) {
     noLoop();
-    }
-  if(jos.wordtGeraakt(bom)){
-      noLoop();
+  }
+  if (jos.wordtGeraakt(alice)){
+    background("red");
+    fill("white");
+    text("Je hebt verloren...", 30, 300);
+    noLoop();
   }
   if (jos.gehaald) {
-    background('green');
-    fill('white');
-    text("Je hebt gewonnen!",30,300);
+    background("green");
+    fill("white");
+    text("Je hebt gewonnen!", 30, 300);
     noLoop();
   }
 }
-

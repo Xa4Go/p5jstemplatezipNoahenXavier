@@ -1,23 +1,20 @@
 function setup() {
   canvas = createCanvas(450, 450);
-  background('grey');
+  background("grey");
   canvas.parent();
   noLoop();
 }
 
 function draw() {
-
   noStroke();
-  fill('green');
+  fill("green");
   ellipse(225, 225, 400);
 
-
-  fill('white');
+  fill("white");
   ellipse(225, 225, 300);
 
- 
-  stroke('green');
-  fill('white');
+  stroke("green");
+  fill("white");
   strokeWeight(10);
   rect(125, 125, 200, 200);
 }
