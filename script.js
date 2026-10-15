@@ -37,24 +37,24 @@ var jos = {
   stapGrootte: null,
   gehaald: false,
 
-  beweeg() {
-    if (keyIsDown(LEFT_ARROW)) {
+  beweeg() {//left
+    if (keyIsDown(65)) { 
       this.x -= this.stapGrootte;
       this.frameNummer = 2;
-    }
-    if (keyIsDown(RIGHT_ARROW)) {
+    }//right
+    if (keyIsDown(68)) { 
       this.x += this.stapGrootte;
       this.frameNummer = 1;
-    }
-    if (keyIsDown(UP_ARROW)) {
+    }//up
+    if (keyIsDown(87)) { 
       this.y -= this.stapGrootte;
       this.frameNummer = 4;
-    }
-    if (keyIsDown(DOWN_ARROW)) {
+    }//down
+    if (keyIsDown(83)) { 
       this.y += this.stapGrootte;
       this.frameNummer = 5;
     }
-
+    
     this.x = constrain(this.x, 0, canvas.width);
     this.y = constrain(this.y, 0, canvas.height - raster.celGrootte);
 
@@ -128,20 +128,29 @@ var bal = {
 };
 
 var bom = {
-  x: 200,
-  y: 600,
-  sprite: null,
-  stapGrootte: null,
+     diameter: 60,
+      straal: null,
+      x: null,
+      y: null,
+      snelheidX: 5,
+      snelheidY: 5,
 
-  beweeg() {
-    this.x += floor(random(-1, 1)) * this.stapGrootte;
-    this.y += floor(random(-1, 1)) * this.stapGrootte;
+      beweeg() {
+        this.x += this.snelheidX;
+        this.y += this.snelheidY;
 
-    this.x = constrain(this.x, 400, canvas.width - raster.celGrootte);
-    this.y = constrain(this.y, 600, canvas.height - raster.celGrootte);
-  },
-  toon() {
-    image(this.sprite, this.x, this.y, raster.celGrootte, raster.celGrootte);
+        if (this.x < this.straal || this.x > canvas.width - this.straal) {
+          this.snelheidX *= 0.5;
+        }
+        if (this.y < this.straal || this.y > canvas.height - this.straal) {
+          this.snelheidY *= 0.5;
+
+      
+        }
+      },
+  teken() {
+    fill(255, 0, 0, 1);
+    ellipse(this.x, this.y, this.diameter);
   },
 };
 var bob = {
@@ -166,7 +175,6 @@ var bob = {
 function preload() {
   brug = loadImage("images/backgrounds/dame_op_brug_1800.jpg");
   alice.sprite = loadImage("images/sprites/Alice100px/Alice.png");
-  bom.sprite = loadImage("images/sprites/bom.png");
   bob.sprite = loadImage("images/sprites/Bob100px/Bob.png");
   for (var b = 0; b < jos.aantalFrames; b++) {
     frameJos = loadImage("images/sprites/Jos100px/Jos_" + b + ".png");
@@ -189,11 +197,15 @@ function setup() {
   bal.straal = bal.diameter / 2;
   bal.x = bal.straal;
   bal.y = bal.straal;
-  colorMode(RGB, 255, 200, 1); //balkleur
+  colorMode(RGB, 255, 200, 1); 
+  bom.straal = bom.diameter / 2;
+  bom.x = bom.straal;
+  bom.y = bom.straal;
+  colorMode(RGB, 255, 255, 1); 
   jos.stapGrootte = 1 * raster.celGrootte;
   alice.stapGrootte = 1 * raster.celGrootte;
   bob.stapGrootte = 1 * raster.celGrootte;
-  ((bom.stapGrootte = 0), 5 * raster.celGrootte);
+  bom.stapGrootte = 0.5 * raster.celGrootte;
   bal.stapGrootte = 1 * raster.celGrootte;
 
   video = createVideo("133143-755982926.mp4");
@@ -218,7 +230,7 @@ function draw() {
   bal.teken();
   jos.toon();
   alice.toon();
-  bom.toon();
+  bom.teken();
   bob.toon();
 
  
