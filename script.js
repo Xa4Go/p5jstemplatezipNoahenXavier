@@ -26,6 +26,8 @@ var raster = {
   },
 };
 
+
+  
 var jos = {
   x: 400,
   y: 300,
@@ -219,6 +221,8 @@ function draw() {
   bom.toon();
   bob.toon();
 
+ 
+  
   if (jos.wordtGeraakt(bob)) {
     background("red");
     fill("white");
