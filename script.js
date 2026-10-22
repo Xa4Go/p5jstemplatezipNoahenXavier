@@ -6,6 +6,7 @@ var raster = {
   aantalRijen: 12,
   aantalKolommen: 18,
   celGrootte: null,
+  
 
   berekenCelGrootte() {
     this.celGrootte = canvas.width / this.aantalKolommen;
@@ -14,7 +15,7 @@ var raster = {
     push();
     noFill();
     stroke("grey");
-
+   
     for (var rij = 0; rij < this.aantalRijen; rij++) {
       for (var kolom = 0; kolom < this.aantalKolommen; kolom++) {
         rect(
@@ -25,6 +26,10 @@ var raster = {
         );
       }
     }
+    stroke ("blue");
+    strokeWeight (6);
+    noFill();
+    rect(0,0, canvas.width, canvas.height);
     pop();
   },
 };
@@ -67,12 +72,26 @@ var jos = {
   },
 
   wordtGeraakt(vijand) {
+    if (vijand.straal != null) {
+      return (
+      dist(
+        this.x + raster.celGrootte / 2,
+        this.y + raster.celGrootte / 2,
+        vijand.x,
+        vijand.y,
+       )< raster.celGrootte / 2 + vijand.straal);
+      
+    }
+      
     if (this.x == vijand.x && this.y == vijand.y) {
       return true;
-    } else {
-      return false;
+      }
+
+      else {
+      return false
     }
   },
+ 
 
   toon() {
     image(
@@ -112,6 +131,7 @@ var bal = {
   snelheidX: 8,
   snelheidY: 5,
 
+
   beweeg() {
     this.x += this.snelheidX;
     this.y += this.snelheidY;
@@ -126,7 +146,9 @@ var bal = {
 
   teken() {
     fill(128, 0, 255, 1);
+    fill("blue");
     ellipse(this.x, this.y, this.diameter);
+    stroke("blue");
   },
 };
 
@@ -137,7 +159,7 @@ function maakBom(snelheidY) {
     x: null,
     y: null,
     snelheidY: snelheidY,
-
+    
     reset() {
       var eersteKolom = floor(raster.aantalKolommen / 2);
       var kolom = floor(random(eersteKolom, raster.aantalKolommen));
@@ -147,8 +169,16 @@ function maakBom(snelheidY) {
 
     beweeg() {
       this.y += this.snelheidY;
-      if (this.y - this.straal > canvas.height) {
-        this.reset();
+      //Onderkant van het veld
+      if (this.y = canvas.height - this.straal)
+        this.snelheidY = -abs(this.snelheidY);  
+      
+        
+        
+         //Bovenkant van het veld
+      
+      if (this.y >= this.straal){
+      this.snelheidY = abs(this.snelheidY);
       }
     },
 
@@ -156,11 +186,12 @@ function maakBom(snelheidY) {
       fill(255, 0, 0);
       ellipse(this.x, this.y, this.diameter);
     },
-  };
-}
+  }
+};
 
 var bom1 = maakBom(5);
 var bom2 = maakBom(3);
+
 var bob = {
   x: 200,
   y: 500,
@@ -194,7 +225,7 @@ function preload() {
 
 function setup() {
   canvas = createCanvas(900, 600);
-  canvas.parent("processing");
+  canvas.parent();
   frameRate(50);
   textFont("Verdana");
   textSize(90);
@@ -235,6 +266,7 @@ function draw() {
   bom1.teken();
   bom2.teken();
   bob.toon();
+  
   if (jos.wordtGeraakt(bob)) {
     background("red");
     fill("white");
@@ -242,9 +274,9 @@ function draw() {
     noLoop();
   }
   if (
-    jos.wordtGeraakt(bom1) ||
+    jos.wordtGeraakt(bom1) || 
     jos.wordtGeraakt(bom2)
-  ) {
+  ){
     background("red");
     fill("white");
     text("Je hebt verloren...", 30, 300);
