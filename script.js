@@ -152,15 +152,46 @@ var bal = {
   },
 };
 
+var bal2 = {
+  diameter: 45,
+  straal: null,
+  x: null,
+  y: null,
+  snelheidX: 10,
+  snelheidY: 7,
+
+
+  beweeg() {
+    this.x += this.snelheidX;
+    this.y += this.snelheidY;
+
+    if (this.x < this.straal || this.x > canvas.width - this.straal) {
+      this.snelheidX *= -1;
+    }
+    if (this.y < this.straal || this.y > canvas.height - this.straal) {
+      this.snelheidY *= -1;
+    }
+  },
+
+  teken() {
+    fill(128, 0, 255, 1);
+    fill("pink");
+    ellipse(this.x, this.y, this.diameter);
+    stroke("blue");
+  },
+};
+
+
 function maakBom(snelheidY) {
   return {
     diameter: 60,
     straal: 30,
     x: null,
     y: null,
+   
     snelheidY: snelheidY,
     
-    reset() {
+    reset() { //reset als nieuw spel, rechts van het midden
       var eersteKolom = floor(raster.aantalKolommen / 2);
       var kolom = floor(random(eersteKolom, raster.aantalKolommen));
       this.x = kolom * raster.celGrootte + raster.celGrootte / 2;
@@ -168,21 +199,21 @@ function maakBom(snelheidY) {
     },
 
     beweeg() {
-      this.y += this.snelheidY;
-      //Onderkant van het veld
-      if (this.y = canvas.height - this.straal)
-        this.snelheidY = -abs(this.snelheidY);  
-      
-        
-        
-         //Bovenkant van het veld
-      
-      if (this.y >= this.straal){
-      this.snelheidY = abs(this.snelheidY);
-      }
-    },
+    
+        this.y += this.snelheidY;
 
-    teken() {
+        if (this.y >= canvas.height - this.straal) {
+          this.snelheidY = -Math.abs(this.snelheidY);
+        }//De absolute waarde wordt uitgevoerd
+
+        if (this.y <= this.straal) {
+          this.snelheidY = Math.abs(this.snelheidY);
+        }
+      },
+
+
+    
+  teken() {
       fill(255, 0, 0);
       ellipse(this.x, this.y, this.diameter);
     },
@@ -234,7 +265,11 @@ function setup() {
   bal.straal = bal.diameter / 2;
   bal.x = bal.straal;
   bal.y = bal.straal;
-
+  
+  bal.straal = bal.diameter / 2;
+  bal.x = bal.straal;
+  bal.y = bal.straal;
+  
   bom1.reset();
   bom2.reset();
   jos.stapGrootte = 1 * raster.celGrootte;
@@ -261,6 +296,8 @@ function draw() {
   bob.beweeg();
   bal.beweeg();
   bal.teken();
+  bal2.beweeg();
+  bal2.teken();
   jos.toon();
   alice.toon();
   bom1.teken();
@@ -292,6 +329,12 @@ function draw() {
     background("green");
     fill("white");
     text("Je hebt gewonnen!", 30, 300);
+    noLoop();
+  }
+  if (jos.wordtGeraakt(bal2)) {
+    background("red");
+    fill("white");
+    text("Je hebt verloren...", 30, 300);
     noLoop();
   }
 }
